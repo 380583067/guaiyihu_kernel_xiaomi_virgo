@@ -30,6 +30,7 @@
 #include <linux/uaccess.h>
 #include <linux/hardirq.h>
 #include <linux/workqueue.h>
+#include <linux/debugfs.h>
 
 #include "internal.h"
 
