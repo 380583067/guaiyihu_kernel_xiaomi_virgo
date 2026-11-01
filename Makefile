@@ -4,6 +4,10 @@ SUBLEVEL = 113
 EXTRAVERSION =
 NAME = Saber-toothed Squirrel
 
+# Fixed Beijing build time for both ROM builds and standalone kernel builds.
+# Keep the numeric offset so initramfs date parsing is timezone-independent.
+export KBUILD_BUILD_TIMESTAMP := Sat Oct 24 10:24:00 +0800 2026
+
 # *DOCUMENTATION*
 # To see a list of typical targets execute "make help"
 # More info can be located in ./README

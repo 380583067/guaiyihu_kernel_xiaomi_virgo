@@ -1127,7 +1127,7 @@ fail:
 	return -EFAULT;
 }
 
-static struct of_device_id cpu_modes_mtch_tbl[] __initdata = {
+static const struct of_device_id cpu_modes_mtch_tbl[] = {
 	{.compatible = "qcom,cpu-modes"},
 	{},
 };
@@ -1141,7 +1141,7 @@ static struct platform_driver cpu_modes_driver = {
 	},
 };
 
-static struct of_device_id system_modes_mtch_tbl[] __initdata = {
+static const struct of_device_id system_modes_mtch_tbl[] = {
 	{.compatible = "qcom,system-modes"},
 	{},
 };
@@ -1155,7 +1155,7 @@ static struct platform_driver system_modes_driver = {
 	},
 };
 
-static struct of_device_id lpm_levels_match_table[] __initdata = {
+static const struct of_device_id lpm_levels_match_table[] = {
 	{.compatible = "qcom,lpm-levels"},
 	{},
 };
