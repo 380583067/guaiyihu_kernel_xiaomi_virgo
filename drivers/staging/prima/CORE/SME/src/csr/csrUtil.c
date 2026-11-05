@@ -3917,11 +3917,14 @@ csrIsPMFCapabilitiesInRSNMatch( tHalHandle hHal,
            "AP needs PMF connection and we are not capable of pmf connection");
            return VOS_FALSE;
        }
+       /* A PMF-capable AP may accept non-PMF WPA2 connections. Reject
+        * disabled PMF only when the AP makes protection mandatory.
+        */
        else if (!(*pFilterMFPEnabled) && *pFilterMFPCapable &&
-                (apProfileMFPCapable == 1))
+                apProfileMFPCapable && apProfileMFPRequired)
        {
            VOS_TRACE(VOS_MODULE_ID_SME, VOS_TRACE_LEVEL_INFO,
-           "we don't need PMF connection eventhough both parties are capable");
+           "AP requires PMF but this connection has PMF disabled");
            return VOS_FALSE;
        }
     }
