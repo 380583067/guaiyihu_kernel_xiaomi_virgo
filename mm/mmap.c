@@ -2120,6 +2120,14 @@ static int __split_vma(struct mm_struct * mm, struct vm_area_struct * vma,
 					~(huge_page_mask(hstate_vma(vma)))))
 		return -EINVAL;
 
+	/* Defensive: never split at or outside the VMA boundary, which would
+	 * create a zero-length or negative-length VMA and corrupt mm->mm_rb. */
+	if (addr <= vma->vm_start || addr >= vma->vm_end) {
+		printk(KERN_ERR "__split_vma: invalid split addr=%lx vma=[%lx,%lx)\n",
+		       addr, vma->vm_start, vma->vm_end);
+		return -EINVAL;
+	}
+
 	new = kmem_cache_alloc(vm_area_cachep, GFP_KERNEL);
 	if (!new)
 		goto out_err;
@@ -2210,6 +2218,14 @@ int do_munmap(struct mm_struct *mm, unsigned long start, size_t len)
 
 	if ((len = PAGE_ALIGN(len)) == 0)
 		return -EINVAL;
+
+	/* Defensive: reject zero-length or overflowed ranges that would
+	 * produce end <= start and corrupt mm->mm_rb downstream. */
+	if (start + len <= start) {
+		printk(KERN_ERR "do_munmap: invalid range [%lx, +%zx) -> end=%lx, rejecting\n",
+		       start, len, start + len);
+		return -EINVAL;
+	}
 
 	/* Find the first overlapping VMA */
 	vma = find_vma(mm, start);
